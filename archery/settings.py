@@ -201,7 +201,7 @@ DATABASES = {
         'NAME': 'archery', # 数据库名称
         'USER': 'root', # 数据库用户
         'PASSWORD': '123456', # 数据库密码
-        'HOST': '127.0.0.1', # 数据库HOST，如果是docker启动并且关联，可以使用容器名连接
+        'HOST': 'mysql', # 数据库HOST，如果是docker启动并且关联，可以使用容器名连接
         'PORT': '3306',  # 数据库端口
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'", # SQL_MODE，为了兼容select * group by，可以按需调整
@@ -247,7 +247,7 @@ Q_CLUSTER = {
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/0", # redis://host:port/db
+        "LOCATION": "redis://redis:6379/0", # redis://host:port/db
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "PASSWORD": "123456"

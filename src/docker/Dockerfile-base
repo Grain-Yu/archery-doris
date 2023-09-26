@@ -19,6 +19,10 @@ ENV LC_ALL zh_CN.UTF-8
 
 
 #python
+COPY dockerize-alpine-linux-amd64-v0.6.1.tar.gz /opt
+ADD SQLAdvisor.zip /opt
+COPY my2sql /opt
+COPY soar /opt
 RUN yum -y install libffi-devel wget gcc make zlib-devel openssl openssl-devel ncurses-devel openldap-devel gettext bzip2-devel xz-devel \
     && cd /opt \
     && wget "https://www.python.org/ftp/python/$PYTHON_VERSION/Python-$PYTHON_VERSION.tar.xz" \
@@ -35,19 +39,23 @@ RUN yum -y install libffi-devel wget gcc make zlib-devel openssl openssl-devel n
     && rm -rf Python-$PYTHON_VERSION \
     && rm -rf Python-$PYTHON_VERSION.tar.xz \
 #dockerize
-    && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
-    && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+#    && wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    # && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+     && tar -C /usr/local/bin -xzvf dockerize-alpine-linux-amd64-v0.6.1.tar.gz \
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
 #sqladvisor
-    && yum -y install epel-release \
+   && yum -y install epel-release \
+    #&& yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm \
     && yum -y install cmake bison gcc-c++ git mysql-devel libaio-devel  glib2 glib2-devel \
     && yum -y install https://repo.percona.com/yum/percona-release-latest.noarch.rpm \
     && yum -y install Percona-Server-devel-57 Percona-Server-shared-57  Percona-Server-client-57 \
     && yum -y install percona-toolkit \
     && ln -fs /usr/lib64/mysql/libmysqlclient.so.18 /usr/lib64/libperconaserverclient_r.so \
     && cd /opt \
-    && git clone https://github.com/hhyo/SQLAdvisor.git --depth 3 \
+    #&& git clone https://github.com/hhyo/SQLAdvisor.git --depth 3 \
+    #&& git clone https://gitclone.com/github.com/hhyo/SQLAdvisor.git --depth 3 \
     && cd /opt/SQLAdvisor/ \
+&& ls -al \
     && cmake -DBUILD_CONFIG=mysql_release -DCMAKE_BUILD_TYPE=debug -DCMAKE_INSTALL_PREFIX=/usr/local/sqlparser ./ \
     && make && make install \
     && cd sqladvisor/ \
@@ -57,11 +65,11 @@ RUN yum -y install libffi-devel wget gcc make zlib-devel openssl openssl-devel n
     && rm -rf /opt/SQLAdvisor/
 #soar
 RUN cd /opt \
-    && wget https://github.com/XiaoMi/soar/releases/download/$SOAR_VERSION/soar.linux-amd64 -O soar \
+#    && wget https://github.com/XiaoMi/soar/releases/download/$SOAR_VERSION/soar.linux-amd64 -O soar \
     && chmod a+x soar \
 #my2sql
     && cd /opt \
-    && wget https://raw.githubusercontent.com/liuhr/my2sql/master/releases/centOS_release_7.x/my2sql -O my2sql \
+#    && wget https://raw.githubusercontent.com/liuhr/my2sql/master/releases/centOS_release_7.x/my2sql -O my2sql \
     && chmod a+x my2sql \
 #msodbc
     && cd /opt \

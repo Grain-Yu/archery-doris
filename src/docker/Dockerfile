@@ -1,4 +1,4 @@
-FROM hhyo/archery-base:sha-bc1191f
+FROM grainyu/archery-base:1.0
 
 WORKDIR /opt/archery
 
@@ -13,8 +13,8 @@ RUN cd /opt \
     && cp /opt/archery/src/docker/supervisord.conf /etc/ \
     && mv /opt/sqladvisor /opt/archery/src/plugins/ \
     && mv /opt/soar /opt/archery/src/plugins/ \
-    && mv /opt/my2sql /opt/archery/src/plugins/
-
+    && mv /opt/my2sql /opt/archery/src/plugins/ \
+    && chmod a+x /opt/archery/src/docker/startup.sh
 #port
 EXPOSE 9123
 
