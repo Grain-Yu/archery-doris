@@ -21,6 +21,8 @@ ENV LC_ALL zh_CN.UTF-8
 #python
 COPY dockerize-alpine-linux-amd64-v0.6.1.tar.gz /opt
 ADD SQLAdvisor.zip /opt
+RUN yum -y install unzip
+RUN unzip /opt/SQLAdvisor.zip
 COPY my2sql /opt
 COPY soar /opt
 RUN yum -y install libffi-devel wget gcc make zlib-devel openssl openssl-devel ncurses-devel openldap-devel gettext bzip2-devel xz-devel \
