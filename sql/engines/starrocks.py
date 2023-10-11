@@ -255,7 +255,7 @@ class StarRocksEngine(EngineBase):
 
     def execute(self, db_name=None, sql="", close_conn=True):
         """原生执行语句"""
-        result = ResultSet(full_sql=sqcl)
+        result = ResultSet(full_sql=sql)
         conn = self.get_connection(db_name=db_name)
         try:
             cursor = conn.cursor()
