@@ -67,8 +67,8 @@ def slowquery_review(request):
                 fingerprint__icontains=search,
                 **filter_kwargs
             )
-            .annotate(SQLText=F("fingerprint"), SQLId=F("checksum"), ReviewedBy=F("reviedwd_by"), ReviewedOn=F("reviewed_on"), Comments=F("comments"), ReviewedStatus=F("reviewed_status"))
-            .values("SQLText", "SQLId", "ReviewedBy", "ReviewedOn", "Comments", "ReviewedStatus")
+            .annotate(SQLText=F("fingerprint"), SQLId=F("checksum"))
+            .values("SQLText", "SQLId")
             .annotate(
                 CreateTime=Max("slowqueryhistory__ts_max"),
                 DBName=Max("slowqueryhistory__db_max"),  # 数据库
@@ -154,7 +154,6 @@ def slowquery_review_history(request):
             sample__icontains=search,
             **filter_kwargs
         ).annotate(
-            SQLChecksum=F("checksum"),  # SQL语句校验和
             ExecutionStartTime=F("ts_min"),  # 本次统计(每5分钟一次)该类型sql语句出现的最小时间
             DBName=F("db_max"),  # 数据库名
             HostAddress=Concat(
@@ -173,7 +172,6 @@ def slowquery_review_history(request):
         slow_sql_record_list = slow_sql_record_obj.order_by(
             "-" + sortName if "desc".__eq__(sortOrder) else sortName
         )[offset:limit].values(
-            "SQLChecksum",
             "ExecutionStartTime",
             "DBName",
             "HostAddress",
